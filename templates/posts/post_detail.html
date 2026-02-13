@@ -1,0 +1,64 @@
+{% extends "posts/base.html" %}
+
+{% block child_block %}
+{%if not user.is_authenticated %}
+<div class="max-w-4xl mx-auto py-8">
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a href="{% url 'home' %}" class="text-indigo-600 hover:underline flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back to Home</span>
+        </a>
+    </div>
+    {%else%}
+<div class="max-w-4xl mx-auto py-8">
+    <!-- Back Button -->    
+    <div class="mb-6">
+        <a href="{% url 'dashboard' %}" class="text-indigo-600 hover:underline flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back to Dashboard</span>
+        </a>
+    </div>
+    {%endif%}
+
+    <!-- Post Card -->
+    <div class="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-indigo-100/50">
+        <!-- Post Title -->
+        <h1 class="text-4xl font-bold font-playfair mb-4 text-gray-800">{{ post.title }}</h1>
+
+        <!-- Author & Date -->
+        <div class="flex items-center space-x-4 mb-6">
+            <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <span class="text-white font-bold">{{ post.author.username|first|upper }}</span>
+            </div>
+            <div>
+                <p class="text-gray-700 font-semibold">{{ post.author.username }}</p>
+                <p class="text-gray-400 text-sm">Posted on {{ post.created_at|date:"M d, Y" }}</p>
+            </div>
+        </div>
+
+        <!-- Post Image -->
+        {% if post.image %}
+            <div class="mb-6">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full rounded-2xl object-cover max-h-96">
+            </div>
+        {% endif %}
+
+        <!-- Post Content -->
+        <div class="text-gray-700 leading-relaxed space-y-4">
+            <p>{{ post.content }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Optional custom styles -->
+<style>
+    .font-playfair {
+        font-family: 'Playfair Display', serif;
+    }
+</style>
+{% endblock %}
