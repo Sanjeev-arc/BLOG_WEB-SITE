@@ -13,10 +13,13 @@ def home_view(request):
 @login_required
 def dashboard(request):
     if request.method=='POST':
-        title=request.POST.get('title')
-        content=request.POST.get('content')
+        title=request.POST.get('title', '').strip()
+        content=request.POST.get('content', '').strip()
         image=request.FILES.get('image')
-        Post.objects.create(author=request.user,title=title,content=content,image=image)
+        
+        # Validation
+        if title and content:
+            Post.objects.create(author=request.user,title=title,content=content,image=image)
         return redirect('dashboard')    
     posts=Post.objects.filter(author=request.user,is_deleted=False).order_by('-created_at')
     context={
@@ -56,3 +59,30 @@ def post_detail(request,id):
         'post':post
     }
     return render(request,'posts/post_detail.html',context=context)   
+
+def post_edit(request,id):
+    post=get_object_or_404(Post,id=id,author=request.user,is_deleted=False)
+    if request.method=='POST':
+        title=request.POST.get('title', '').strip()
+        content=request.POST.get('content', '').strip()
+        image=request.FILES.get('image')
+        
+        # Validation
+        errors = []
+        if not title:
+            errors.append('Title is required')
+        if not content:
+            errors.append('Content is required')
+        
+        if errors:
+            context={'post':post, 'errors':errors}
+            return render(request,'posts/post_edit.html',context=context)
+        
+        post.title=title
+        post.content=content
+        if image:
+            post.image=image
+        post.save()
+        return redirect('dashboard')
+    context={'post':post}
+    return render(request,'posts/post_edit.html',context=context)

@@ -9,5 +9,6 @@ urlpatterns=[
     path('restore/<int:id>/',views.restore_post,name='restore_post'),
     path('permanent_delete/<int:id>/',views.permanent_delete,name='permanent_delete'),
     path('post_detail/<int:id>/',views.post_detail,name='post_detail'),
+    path('post_edit/<int:id>/',views.post_edit,name='post_edit'),
     
 ]
