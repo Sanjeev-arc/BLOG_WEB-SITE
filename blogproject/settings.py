@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'allauth_ui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'posts',
     'allauth',
     'allauth.account',
+    'widget_tweaks',
+    'slippers',
 ]
 
 MIDDLEWARE = [
@@ -132,5 +135,11 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 LOGIN_REDIRECT_URL='/dashboard/'
-LOGOUT_REDIRECT_URL='/'
+LOGOUT_REDIRECT_URL='home'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_EMAIL_VERIFICATION='mandatory'
+ACCOUNT_SIGNUP_FIELDS=['username*','email*','password1*','password2*']
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED=True
+ACCOUNT_LOGIN_METHODS=['email','username']
+ACCOUNT_SIGNUP_FORM_CLASS='posts.forms.CustomSignupForm'
